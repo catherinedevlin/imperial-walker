@@ -7,7 +7,7 @@ import pytest
 from click.testing import CliRunner
 
 from imperial_walker import cli
-from imperial_walker.walker import ScoutWalker
+from imperial_walker.walker import ScoutWalker, Walker
 
 # @pytest.fixture
 # def response():
@@ -17,6 +17,20 @@ from imperial_walker.walker import ScoutWalker
 #     """
 #     # import requests
 #     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+
+
+def test_walker_lists_leaves():
+    data = {"a": 1, "b": [{"c": 2, "d": 3}], "e": {"f": 4}}
+    walker = Walker()
+    result = list(walker.walk(data))
+    assert result == [1, 2, 3, 4]
+
+
+def test_walker_works_with_tuples():
+    data = {"a": 1, "b": ({"c": 2, "d": 3}), "e": {"f": 4}}
+    walker = Walker()
+    result = list(walker.walk(data))
+    assert result == [1, 2, 3, 4]
 
 
 def test_scout_walker_lists_leaf_paths():

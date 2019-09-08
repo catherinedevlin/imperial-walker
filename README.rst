@@ -30,6 +30,13 @@ Walks complex nested data structures to map or do arbitrary commands.
 Usage
 -----
 
+The base class `Walker` simply yields the value of each leaf.
+
+    >>> data = {"a": 1, "b": ({"c": 2, "d": 3}), "e": {"f": 4}}
+    >>> walker = Walker()
+    >>> list(walker.walk(data))
+    [1, 2, 3, 4
+
 The provided `ScoutWalker` returns the [jq](https://stedolan.github.io/jq/) 
 paths of all leaf nodes in the data structure.
 
@@ -40,14 +47,23 @@ paths of all leaf nodes in the data structure.
     ['.a', '.b[].c', '.b[].d', '.e.f']
 
 `ScoutWalker` is one sample subclass of `Walker`.  Write custom 
-subclasses for arbitrary behavior.
+subclasses, overriding `Walker.walk` and imitating its structure,
+for arbitrary behavior.
 
-Features
---------
+When mapping large data trees, it may be useful to postprocess 
+`ScoutWalker`'s output with `set` or `collections.Counter`.
 
-* TODO
+Notes
+-----
 
-- Hooks for `at_branch`, `at_leaf` (TODO)
+`Walker.walk` is simple enough that writing it to invoke hooks seemed 
+to create more confusion than it solved; rather, just copy-and-paste 
+`walk` from `Walker` or `ScoutWalker` to your subclass and modify 
+as needed.
+
+So far, no class data is used, so perhaps the whole module should be 
+rewritten into a set of functions.
+
 
 Credits
 -------

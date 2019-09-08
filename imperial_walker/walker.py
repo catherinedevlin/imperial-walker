@@ -10,39 +10,63 @@ def _is_dictlike(data):
 
 def _is_listlike(data):
 
-    return isinstance(data, list)
+    return hasattr(data, "__iter__") and not hasattr(data, "swapcase")
 
 
 class Walker:
 
-    pass
+    """Base class for walkers.  
+    
+    Subclass and replace `walk` for specific functions.
+    """
 
+    def walk(self, data, upstream=None):
+        """Generic walker that yields all leaves.
 
-class ScoutWalker(Walker):
-    def __init__(self):
-        pass
-
-    def walk(self, data, path=None):
-
-        # make path more generic
-
-        # call path initialization hook
-        if path is None:
-            path = ["."]
+        :param data: Data tree to walk over 
+        :type data: Any 
+        :param upstream: Any data that needs to be carried to branches 
+                         from upstream (none for base class)
+                         defaults to None
+        :type upstream: Any, optional
+        """
 
         if _is_dictlike(data):
             for (k, v) in data.items():
-                # call branch hook
-                # generic passer-on of upstream info (more generic than path)
-                yield from self.walk(v, path=(path + [f".{k}"]))
+                yield from self.walk(v, upstream=upstream)
 
         elif _is_listlike(data):
             for itm in data:
-                # call branch hook
-                # generic passer-on of upstream info (more generic than path)
-                yield from self.walk(itm, path=(path + ["[]"]))
+                yield from self.walk(itm, upstream=upstream)
 
         else:
-            # call Finalizer hook
-            # call leaf hook
-            yield "".join(path).replace("..", ".")
+            yield data
+
+
+class ScoutWalker(Walker):
+    def walk(self, data, upstream=None):
+        """Yields jq paths of all leaves.
+
+        :param data: Data tree to walk over 
+        :type data: Any 
+        :param upstream: jq path of the structure 
+                         to this point; defaults to None
+        :type upstream: str 
+        """
+
+        if upstream is None:
+            upstream = "."
+
+        if _is_dictlike(data):
+            for (k, v) in data.items():
+                path = "%s.%s" % (upstream, k)
+                yield from self.walk(v, upstream=path)
+
+        elif _is_listlike(data):
+            for itm in data:
+                path = "%s[]" % upstream
+                yield from self.walk(itm, upstream=path)
+
+        else:
+            path = upstream.replace("..", ".")
+            yield path
