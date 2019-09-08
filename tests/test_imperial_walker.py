@@ -4,12 +4,10 @@
 """Tests for `imperial_walker` package."""
 
 import pytest
-
 from click.testing import CliRunner
 
-from imperial_walker.walker import ScoutWalker
 from imperial_walker import cli
-
+from imperial_walker.walker import ScoutWalker
 
 # @pytest.fixture
 # def response():
@@ -21,14 +19,20 @@ from imperial_walker import cli
 #     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
 
 
-def test_scout_walker_lists_leaves():
+def test_scout_walker_lists_leaf_paths():
 
-    data = {'a': 1, 'b': [{'c': 2, 'd': 3}], 'e': {'f': 4}}
-    walker = ScoutWalker() 
-    result = walker.walk(data)
-    assert result == ['.a', '.b[].c', '.b[].d', '.e.f']
+    data = {"a": 1, "b": [{"c": 2, "d": 3}], "e": {"f": 4}}
+    walker = ScoutWalker()
+    result = list(walker.walk(data))
+    assert result == [".a", ".b[].c", ".b[].d", ".e.f"]
 
 
+def test_scout_walker_lists_leaf_paths_separately():
+
+    data = {"b": [{"c": 2, "d": 3}, {"c": 22, "g": 5}]}
+    walker = ScoutWalker()
+    result = list(walker.walk(data))
+    assert result == [".b[].c", ".b[].d", ".b[].c", ".b[].g"]
 
 
 # def test_command_line_interface():

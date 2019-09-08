@@ -11,3 +11,6 @@ click==6.7
 pytest==3.8.2
 pytest-runner==4.2
 jq==0.1.6
+black==19.3b0
+isort==4.3.21
+vulture==1.0

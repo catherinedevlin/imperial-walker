@@ -36,7 +36,7 @@ paths of all leaf nodes in the data structure.
     >>> from imperial_walker.walker import ScoutWalker 
     >>> data = {'a': 1, 'b': [{'c': 2, 'd': 3}], 'e': {'f': 4}}
     >>> walker = ScoutWalker() 
-    >>> walker.walk(data)
+    >>> list(walker.walk(data))
     ['.a', '.b[].c', '.b[].d', '.e.f']
 
 `ScoutWalker` is one sample subclass of `Walker`.  Write custom 
@@ -45,22 +45,9 @@ subclasses for arbitrary behavior.
 Features
 --------
 
-- Hooks for `at_branch`, `at_leaf`
-
-
-
-
-
-
-
-
-
-
-    class (Walker):
-
-    
-
 * TODO
+
+- Hooks for `at_branch`, `at_leaf` (TODO)
 
 Credits
 -------
