@@ -14,8 +14,8 @@ Imperial Walker
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/catherinedevlin/imperial_walker/shield.svg
-     :target: https://pyup.io/repos/github/catherinedevlin/imperial_walker/
+.. image:: https://pyup.io/repos/github/catherinedevlin/imperial-walker/shield.svg
+     :target: https://pyup.io/repos/github/catherinedevlin/imperial-walker/
      :alt: Updates
 
 

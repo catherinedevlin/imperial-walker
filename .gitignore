@@ -100,3 +100,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+ 
+# Scratch notebooks
+Untitled*.ipynb 
+
+# VSCode settings
+settings.json
