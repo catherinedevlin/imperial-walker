@@ -38,7 +38,7 @@ def test_scout_walker_lists_leaf_paths():
     data = {"a": 1, "b": [{"c": 2, "d": 3}], "e": {"f": 4}}
     walker = ScoutWalker()
     result = list(walker.walk(data))
-    assert sorted(result) == [".a", ".b[].c", ".b[].d", ".e.f"]
+    assert result == [".a", ".b[].c", ".b[].d", ".e.f"]
 
 
 def test_scout_walker_lists_leaf_paths_separately():
@@ -46,7 +46,7 @@ def test_scout_walker_lists_leaf_paths_separately():
     data = {"b": [{"c": 2, "d": 3}, {"c": 22, "g": 5}]}
     walker = ScoutWalker()
     result = list(walker.walk(data))
-    assert sorted(result) == [".b[].c", ".b[].d", ".b[].c", ".b[].g"]
+    assert result == [".b[].c", ".b[].d", ".b[].c", ".b[].g"]
 
 
 # def test_command_line_interface():
